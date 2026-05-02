@@ -7,3 +7,8 @@ class Strategy():
     def Make_Move() -> Action:
         return Action.Cooperate
 
+class Random_Strategy(Strategy):
+    def __init__(self):
+        super().__init__()
+
+    
