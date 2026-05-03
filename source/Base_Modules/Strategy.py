@@ -11,3 +11,6 @@ class Strategy(Generic[Act]):
 
     def Make_Move(self, ID : int, action_history : list[dict[int, Act]], total_games : int) -> Act:
         return None
+
+    def __str__(self):
+        return "Base Strategy"

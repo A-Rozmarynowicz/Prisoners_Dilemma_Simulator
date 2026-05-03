@@ -16,5 +16,8 @@ players = {
 gm = Game_Master(prison, players=players)
 
 action_history, score = gm.Tournament(10, Game_Master.Game_Type.All_Vs_All, True, 2, False)
+score = asc = {k: v for k, v in sorted(score.items(), key=lambda item: -item[1])}
 
-print(sorted(score.items(), key=lambda item: -item[1]))
+winner = next(iter(score.keys()))
+
+print(str(players[winner].Get_Strategy()))

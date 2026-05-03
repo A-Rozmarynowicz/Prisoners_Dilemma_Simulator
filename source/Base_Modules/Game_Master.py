@@ -33,7 +33,8 @@ class Game_Master():
 
     def All_Vs_All_Match(self, total_games_param : int, duel_size : int, duel_oneself : bool):
         inc = 0 if duel_oneself else 1
+        ps = self.players
 
-        for p0 in range(0, len(self.players)):
-            for p1 in range(p0+inc, len(self.players)):
-                self.environment.Duel(total_games_param, self.players[p0], self.players[p1])
+        for p0 in range(0, len(ps)):
+            for p1 in range(p0+inc, len(ps)):
+                self.environment.Duel(total_games_param, ps[list(ps.keys())[p0]], ps[list(ps.keys())[p1]])

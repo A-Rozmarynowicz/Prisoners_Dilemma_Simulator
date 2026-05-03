@@ -25,3 +25,6 @@ class Bot_Player(Player):
 
     def Make_Move(self, action_history : Action_History, total_games : int) -> Act:
         return self.strategy.Make_Move(ID=self.ID, action_history=action_history, total_games=total_games)
+
+    def Get_Strategy(self) -> Strategy[Act]:
+        return self.strategy
