@@ -10,6 +10,7 @@ strategies = {
     0: Random_Strategy(0, actions),
     1: Always_Betray(1, actions),
     2: Always_Cooperate(2, actions),
+    3: Random_Strategy(3, actions, p_coop=0.1),
 }
 
 gm = Game_Master(prison, strategies=strategies)
@@ -19,5 +20,5 @@ score = asc = {k: v for k, v in sorted(score.items(), key=lambda item: -item[1])
 
 winner = next(iter(score.keys()))
 
-# print(str(players[winner].Get_Strategy()))
+print(str(strategies[winner]))
 print(score)

@@ -17,4 +17,4 @@ class Strategy(Generic[Act]):
         return self.ID
 
     def __str__(self):
-        return "Base Strategy"
+        return self.__class__.__name__
