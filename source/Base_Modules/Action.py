@@ -14,9 +14,9 @@ Act = TypeVar("Act", bound=Actions)
 class Action_History(Generic[Act]):
     def __init__(self):
         super().__init__()
-        self.action_history : list[dict[int, Act]] = []
+        self.action_history : list[Duel_Matrix] = []
 
-    def Append_Strategy_Actions(self, strategy_actions : dict[int, Act]) -> None:
+    def Append_Strategy_Actions(self, strategy_actions : Duel_Matrix) -> None:
         self.action_history.append(strategy_actions)
 
     def Get_Action(self, history_index : int, strategy_ID : int) -> Act:
@@ -28,3 +28,10 @@ class Action_History(Generic[Act]):
 class Duel_Matrix(Generic[Act]):
     def __init__(self):
         super().__init__()
+        self.duel_matrix = dict[tuple[int, ...], tuple(Act, ...)]
+
+    def Set(self, indices_tuple : tuple[int, ...], actions_tuple : tuple[Act, ...]) -> None:
+        self.duel_matrix[indices_tuple] = actions_tuple
+
+    def Get(self, indices_tuple : tuple[int, ...]) -> tuple[Act, ...]:
+        return self.duel_matrix[indices_tuple]
