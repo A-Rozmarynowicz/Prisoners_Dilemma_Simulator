@@ -13,11 +13,3 @@ class Strategy(Generic[Act]):
     def Make_Move(self, ID : int, action_history : list[dict[int, Act]]) -> Act:
         return None
 
-class Prison_Strategy(Strategy[Prison_Actions]):
-    def Make_Move(self, ID, action_history) -> Prison_Actions:
-        return list(Prison_Actions)[0]
-
-class Random_Strategy(Prison_Strategy):
-    def Make_Move(self, ID, action_history):
-        return self.Get_Random_Action()
-
