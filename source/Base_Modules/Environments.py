@@ -1,5 +1,5 @@
-from utils.Action import Act, Actions, Prison_Actions, Action_History
-from utils.Player import Player
+from Base_Modules.Action import Act, Actions, Prison_Actions, Action_History
+from Base_Modules.Player import Player
 from typing import Type, Generic
 from collections import defaultdict
 
@@ -11,10 +11,10 @@ class Environment(Generic[Act]):
     def Get_Actions(self) -> Type[Act]:
         return Actions
 
-    def Duel(self) -> dict[int, Act]:
+    def Duel(self, total_games : int, *players : Player) -> dict[int, Act]:
         return {}
 
-    def Query_Players_Moves(self) -> dict[int, Act]:
+    def Query_Players_Moves(self, total_games : int, *players : Player) -> dict[int, Act]:
         return {}
 
     def Reward(self, players_actions : dict[int, Act]) -> dict[int, int]:
@@ -30,6 +30,9 @@ class Environment(Generic[Act]):
     def Get_Total_Rewards(self) -> defaultdict:
         return self.total_score
 
+    def Get_Action_History(self) -> Action_History:
+        return self.action_history
+
 class Prison(Environment[Prison_Actions]):
     def __init__(self):
         super().__init__()
@@ -37,18 +40,18 @@ class Prison(Environment[Prison_Actions]):
     def Get_Actions(self) -> Type[Prison_Actions]:
         return Prison_Actions
 
-    def Duel(self, *players : Player[Prison_Actions]) ->  dict[int, int]:
+    def Duel(self, total_games : int, *players : Player[Prison_Actions]) ->  dict[int, int]:
         if len(players) != 2:
             raise ValueError("This duel requires exactly 2 players")
-        players_actions = self.Query_Players_Moves(*players)
+        players_actions = self.Query_Players_Moves(total_games, *players)
         rewards = self.Reward(players_actions)
         self._add_rewards(rewards)
         return rewards, players_actions
 
-    def Query_Players_Moves(self, *players : Player[Prison_Actions]) ->  dict[int, Prison_Actions]:
+    def Query_Players_Moves(self, total_games : int, *players : Player[Prison_Actions]) ->  dict[int, Prison_Actions]:
         players_actions : dict[int, Act]= {}
         for player in players:
-            players_actions[player.Get_ID()] = player.Make_Move(self.action_history)
+            players_actions[player.Get_ID()] = player.Make_Move(self.action_history, total_games=total_games)
         self.action_history.Append_Players_Actions(players_actions)
         return players_actions
 

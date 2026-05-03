@@ -1,0 +1,43 @@
+from Base_Modules.Environments import Environment
+from Base_Modules.Strategy import Strategy
+from Base_Modules.Player import Player
+from typing import Type
+from enum import Enum
+
+
+class Game_Master():
+    class Game_Type(Enum):
+        All_Vs_All = 0
+
+    def __init__(
+            self,
+            environment : Environment,
+            total_games : int,
+            total_games_explicit : bool,
+            game_type : "Game_Master.Game_Type",
+            duel_size : int,
+            duel_oneself : bool,
+            players : list[Player],
+    ):
+        self.total_games : int = total_games
+        self.total_games_explicit : bool = total_games_explicit
+        self.environment : Environment = environment
+        self.game_type : Game_Master.Game_Type = game_type
+        self.duel_size : int = duel_size,
+        self.players : dict[int, Player] = players
+        self.duel_oneself : bool = duel_oneself
+
+    def Tournament(self):
+        total_games_param = self.total_games if self.total_games_explicit else -1
+        match self.game_type:
+            case Game_Master.Game_Type.All_Vs_All:
+                for game_index in range(0, self.total_games):
+                    self.All_Vs_All_Match(total_games_param)
+        return self.environment.Get_Action_History(), self.environment.Get_Total_Rewards()
+
+    def All_Vs_All_Match(self, total_games_param : int):
+        inc = 0 if self.duel_oneself else 1
+
+        for p0 in range(0, len(self.players)):
+            for p1 in range(p0+inc, len(self.players)):
+                self.environment.Duel(total_games_param, self.players[p0], self.players[p1])
