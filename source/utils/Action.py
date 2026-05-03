@@ -20,4 +20,7 @@ class Action_History(Generic[Act]):
         self.action_history.append(players_actions)
 
     def Get_Action(self, history_index : int, player_ID : int) -> Act:
-        return self.action_history[history_index][player_ID]
+        return self.Get_Players_Actions(history_index)[player_ID]
+
+    def Get_Players_Actions(self, history_index : int) -> Act:
+        return self.action_history[history_index]
