@@ -9,4 +9,7 @@ actions = prison.Get_Actions()
 random_player_1 = Bot_Player(0, actions, Random_Strategy)
 random_player_2 = Bot_Player(1, actions, Random_Strategy)
 
-print(prison.Duel(random_player_1, random_player_2))
+for i in range(10):
+    prison.Duel(random_player_1, random_player_2)
+
+print(prison.Get_Total_Rewards())

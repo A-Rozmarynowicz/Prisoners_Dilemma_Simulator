@@ -1,10 +1,11 @@
 from utils.Action import Act, Actions, Prison_Actions, Action_History
 from utils.Player import Player
 from typing import Type, Generic
+from collections import defaultdict
 
 class Environment(Generic[Act]):
     def __init__(self):
-        self.total_score : dict[int, int] = {}
+        self.total_score = defaultdict(int)
         self.action_history = Action_History[Act]()
 
     def Get_Actions(self) -> Type[Act]:
@@ -22,6 +23,13 @@ class Environment(Generic[Act]):
             rewards[i] = 0
         return rewards
 
+    def _add_rewards(self, rewards : dict[int, int]) -> None:
+        for player in rewards.keys():
+            self.total_score[player] += rewards[player]
+
+    def Get_Total_Rewards(self) -> defaultdict:
+        return self.total_score
+
 class Prison(Environment[Prison_Actions]):
     def __init__(self):
         super().__init__()
@@ -34,6 +42,7 @@ class Prison(Environment[Prison_Actions]):
             raise ValueError("This duel requires exactly 2 players")
         players_actions = self.Query_Players_Moves(*players)
         rewards = self.Reward(players_actions)
+        self._add_rewards(rewards)
         return rewards, players_actions
 
     def Query_Players_Moves(self, *players : Player[Prison_Actions]) ->  dict[int, Prison_Actions]:
