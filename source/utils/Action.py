@@ -14,7 +14,7 @@ Act = TypeVar("Act", bound=Actions)
 class Action_History(Generic[Act]):
     def __init__(self):
         super().__init__()
-        self.action_history : list[dict[int, Act]] = {}
+        self.action_history : list[dict[int, Act]] = []
 
     def Append_Players_Actions(self, players_actions : dict[int, Act]) -> None:
         self.action_history.append(players_actions)

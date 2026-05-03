@@ -3,10 +3,10 @@ from utils.Strategy import Strategy, Prison_Strategy, Random_Strategy
 from utils.Environments import Environment, Prison
 from utils.Player import Bot_Player
 
-p = Prison()
-actions = p.Get_Actions()
+prison = Prison()
+actions = prison.Get_Actions()
 
-s = Random_Strategy(actions)
-d  = Bot_Player(0, s)
+random_player_1 = Bot_Player(0, actions, Random_Strategy)
+random_player_2 = Bot_Player(1, actions, Random_Strategy)
 
-print(d.Make_Move([]))
+print(prison.Duel(random_player_1, random_player_2))

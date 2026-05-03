@@ -1,6 +1,6 @@
 from utils.Strategy import Strategy
 from utils.Action import Act, Actions, Action_History
-from typing import Type, Generic
+from typing import Type, Generic, Union
 
 class Player(Generic[Act]):
     def __init__(self, ID : int):
@@ -13,9 +13,15 @@ class Player(Generic[Act]):
         return None
 
 class Bot_Player(Player):
-    def __init__(self, ID : int, strategy : Strategy):
+    def __init__(self, ID: int, actions: type[Act], strategy: Union[Strategy[Act], Type[Strategy[Act]]]):
         super().__init__(ID=ID)
-        self.strategy = strategy
+
+        if isinstance(strategy, type) and issubclass(strategy, Strategy):
+            self.strategy = strategy(actions)
+        elif isinstance(strategy, Strategy):
+            self.strategy = strategy
+        else:
+            raise TypeError("strategy must be either a string or Strategy")
 
     def Make_Move(self, action_history : Action_History) -> Act:
         return self.strategy.Make_Move(ID=self.ID, action_history=action_history)
