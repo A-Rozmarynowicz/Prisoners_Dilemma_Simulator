@@ -4,7 +4,7 @@ from typing import TypeVar
 class Action_Space(Enum):
     pass
 
-class Default_Action_Space(Action_Space):
+class Prison_Action_Space(Action_Space):
     Cooperate = 0
     Betray = 1
 
