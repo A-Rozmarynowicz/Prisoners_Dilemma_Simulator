@@ -30,9 +30,11 @@ class Prison(Environment[Prison_Actions]):
         return Prison_Actions
 
     def Duel(self, *players : Player[Prison_Actions]) ->  dict[int, int]:
+        if len(players) != 2:
+            raise ValueError("This duel requires exactly 2 players")
         players_actions = self.Query_Players_Moves(*players)
         rewards = self.Reward(players_actions)
-        return rewards
+        return rewards, players_actions
 
     def Query_Players_Moves(self, *players : Player[Prison_Actions]) ->  dict[int, Prison_Actions]:
         players_actions : dict[int, Act]= {}
@@ -42,4 +44,20 @@ class Prison(Environment[Prison_Actions]):
         return players_actions
 
     def Reward(self, players_actions):
-        return super().Reward(players_actions)
+        rewards = {}
+        players = list(players_actions.keys())
+        p1, p2 = players[0], players[1]
+        if players_actions[p1] == Prison_Actions.Cooperate and players_actions[p2] == Prison_Actions.Cooperate:
+            rewards[p1] = 3
+            rewards[p2] = 3
+        elif players_actions[p1] == Prison_Actions.Betray and players_actions[p2] == Prison_Actions.Cooperate:
+            rewards[p1] = 5
+            rewards[p2] = 0
+        elif players_actions[p1] == Prison_Actions.Cooperate and players_actions[p2] == Prison_Actions.Betray:
+            rewards[p1] = 0
+            rewards[p2] = 5
+        elif players_actions[p1] == Prison_Actions.Betray and players_actions[p2] == Prison_Actions.Betray:
+            rewards[p1] = 1
+            rewards[p2] = 1
+        return rewards
+
