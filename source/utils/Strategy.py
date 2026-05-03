@@ -4,11 +4,11 @@ import random
 
 
 class Strategy(Generic[Act]):
-    def __init__(self):
-        pass
+    def __init__(self, actions : Type[Act]):
+        self.actions = actions
 
     def Get_Random_Action(self) -> Act:
-        return random.choice(list(Actions))
+        return random.choice(list(self.actions))
 
     def Make_Move(self, ID : int, action_history : list[dict[int, Act]]) -> Act:
         return None
@@ -18,9 +18,6 @@ class Prison_Strategy(Strategy[Prison_Actions]):
         return list(Prison_Actions)[0]
 
 class Random_Strategy(Prison_Strategy):
-    def __init__(self):
-        super().__init__()
-
-    def Make_Move(self, ID, action_space, action_history):
+    def Make_Move(self, ID, action_history):
         return self.Get_Random_Action()
 
