@@ -13,5 +13,5 @@ class Bot_Player(Player):
         super().__init__()
         self.strategy = strategy
 
-    def Make_Move(self) -> Action:
-        return self.strategy.Make_Move()
+    def Make_Move(self, action_history : list) -> Action:
+        return self.strategy.Make_Move(action_history)
