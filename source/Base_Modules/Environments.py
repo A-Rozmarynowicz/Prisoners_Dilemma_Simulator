@@ -2,20 +2,15 @@ from Base_Modules.Strategy import Strategy
 from Prison_Strategies.Basic_Strategies import Prison_Strategy
 from Base_Modules.Action import Act, Actions, Prison_Actions, Action_History
 from typing import Type, Generic
-from collections import defaultdict
 
 class Environment(Generic[Act]):
-    def __init__(self):
-        self.total_score = defaultdict(int)
-        self.action_history = Action_History[Act]()
-
     def Get_Actions(self) -> Type[Act]:
         return Actions
 
-    def Duel(self, total_games : int, *strategies : Strategy) -> dict[int, Act]:
-        return {}
+    def Duel(self, total_games : int, *strategies : Strategy) -> tuple[dict[int, int], dict[int, Act]]:
+        return ()
 
-    def Query_Strategies_Moves(self, total_games : int, *strategies : Strategy) -> dict[int, Act]:
+    def Query_Strategies_Moves(self, total_games : int, game_index : int, action_history : Action_History, *strategies : Strategy) -> dict[int, Act]:
         return {}
 
     def Reward(self, strategies_actions : dict[int, Act]) -> dict[int, int]:
@@ -24,39 +19,25 @@ class Environment(Generic[Act]):
             rewards[i] = 0
         return rewards
 
-    def _add_rewards(self, rewards : dict[int, int]) -> None:
-        for strategy_id in rewards.keys():
-            self.total_score[strategy_id] += rewards[strategy_id]
-
-    def Get_Total_Rewards(self) -> defaultdict:
-        return self.total_score
-
-    def Get_Action_History(self) -> Action_History:
-        return self.action_history
-
-    def Reset(self) -> None:
-        return
-
 class Prison(Environment[Prison_Actions]):
-    def __init__(self):
-        super().__init__()
-
     def Get_Actions(self) -> Type[Prison_Actions]:
         return Prison_Actions
 
-    def Duel(self, total_games : int, *strategies : Prison_Strategy) ->  dict[int, int]:
+    def Duel(self, total_games : int, game_index : int, action_history : Action_History, *strategies : Prison_Strategy):
         if len(strategies) != 2:
             raise ValueError("This duel requires exactly 2 players")
-        players_actions = self.Query_Strategies_Moves(total_games, *strategies)
-        rewards = self.Reward(players_actions)
-        self._add_rewards(rewards)
-        return rewards, players_actions
+        strategies_actions = self.Query_Strategies_Moves(total_games, game_index, action_history, *strategies)
+        rewards = self.Reward(strategies_actions)
+        return rewards, strategies_actions
 
-    def Query_Strategies_Moves(self, total_games : int, *strategies : Prison_Strategy) ->  dict[int, Prison_Actions]:
+    def Query_Strategies_Moves(self,
+                               total_games : int,
+                               game_index : int,
+                               action_history : Action_History,
+                               *strategies : Prison_Strategy):
         strategies_actions : dict[int, Act]= {}
         for strategy in strategies:
-            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(self.action_history, total_games=total_games)
-        self.action_history.Append_Strategy_Actions(strategies_actions)
+            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games, game_index=game_index, action_history=action_history)
         return strategies_actions
 
     def Reward(self, strategies_actions):

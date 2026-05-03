@@ -24,3 +24,7 @@ class Action_History(Generic[Act]):
 
     def Get_Strategys_Actions(self, history_index : int) -> Act:
         return self.action_history[history_index]
+
+class Duel_Matrix(Generic[Act]):
+    def __init__(self):
+        super().__init__()
