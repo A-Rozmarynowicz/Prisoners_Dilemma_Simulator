@@ -16,11 +16,11 @@ class Action_History(Generic[Act]):
         super().__init__()
         self.action_history : list[dict[int, Act]] = []
 
-    def Append_Players_Actions(self, players_actions : dict[int, Act]) -> None:
-        self.action_history.append(players_actions)
+    def Append_Strategy_Actions(self, strategy_actions : dict[int, Act]) -> None:
+        self.action_history.append(strategy_actions)
 
-    def Get_Action(self, history_index : int, player_ID : int) -> Act:
-        return self.Get_Players_Actions(history_index)[player_ID]
+    def Get_Action(self, history_index : int, strategy_ID : int) -> Act:
+        return self.Get_Players_Actions(history_index)[strategy_ID]
 
-    def Get_Players_Actions(self, history_index : int) -> Act:
+    def Get_Strategys_Actions(self, history_index : int) -> Act:
         return self.action_history[history_index]
