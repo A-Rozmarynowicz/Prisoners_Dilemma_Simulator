@@ -1,20 +1,20 @@
-from utils.Action import Action_Space, T
-from typing import Type, TypeVar, Generic
+from utils.Action import Action
+from typing import Type, Generic
 import random
 
 
-class Strategy(Generic[T]):
-    def __init__(self, action_space: Type[T]):
+class Strategy(Generic[Action]):
+    def __init__(self, action_space: Type[Action]):
         self.action_space = action_space
 
-    def Get_Random_Action(self) -> T:
+    def Get_Random_Action(self) -> Action:
         return random.choice(list(self.action_space))
 
-    def Get_Action_Space(self) -> Type[T]:
+    def Get_Action_Space(self) -> Type[Action]:
         return self.action_space
 
-    def Make_Move(self, action_history : list[tuple[T, ...]]) -> T:
-        return list(self.action_space)[0]
+    # def Make_Move(self, action_history : list[tuple[Action, ...]]) -> Action:
+    #     return list(self.action_space)[0]
 
 class Random_Strategy(Strategy):
     def __init__(self):
