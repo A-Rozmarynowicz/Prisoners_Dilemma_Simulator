@@ -1,6 +1,5 @@
 from Base_Modules.Environments import Environment
 from Base_Modules.Strategy import Strategy
-from Base_Modules.Player import Player
 from typing import Type
 from enum import Enum
 
@@ -12,10 +11,10 @@ class Game_Master():
     def __init__(
             self,
             environment : Environment,
-            players : list[Player],
+            strategies : list[Strategy],
     ):
         self.environment : Environment = environment
-        self.players : dict[int, Player] = players
+        self.strategies : dict[int, Strategy] = strategies
 
     def Tournament(self,
                     total_games : int,
@@ -33,8 +32,8 @@ class Game_Master():
 
     def All_Vs_All_Match(self, total_games_param : int, duel_size : int, duel_oneself : bool):
         inc = 0 if duel_oneself else 1
-        ps = self.players
+        ps = self.strategies
 
-        for p0 in range(0, len(ps)):
-            for p1 in range(p0+inc, len(ps)):
-                self.environment.Duel(total_games_param, ps[list(ps.keys())[p0]], ps[list(ps.keys())[p1]])
+        for s0 in range(0, len(ps)):
+            for s1 in range(s0+inc, len(ps)):
+                self.environment.Duel(total_games_param, ps[list(ps.keys())[s0]], ps[list(ps.keys())[s1]])

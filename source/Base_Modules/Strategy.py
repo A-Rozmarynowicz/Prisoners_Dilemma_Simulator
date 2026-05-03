@@ -10,7 +10,7 @@ class Strategy(Generic[Act]):
     def Get_Random_Action(self) -> Act:
         return random.choice(list(self.actions))
 
-    def Make_Move(self, ID : int, action_history : list[dict[int, Act]], total_games : int) -> Act:
+    def Make_Move(self, action_history : list[dict[int, Act]], total_games : int) -> Act:
         return None
 
     def Get_ID(self) -> int:
