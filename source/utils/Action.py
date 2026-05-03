@@ -1,11 +1,9 @@
 from enum import Enum
 from typing import TypeVar
 
-class Action_Space(Enum):
+class Actions(Enum):
     pass
 
-class Prison_Action_Space(Action_Space):
+class Prison_Actions(Actions):
     Cooperate = 0
     Betray = 1
-
-Action = TypeVar("Action", bound=Action_Space)
