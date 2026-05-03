@@ -7,7 +7,7 @@ class Environment(Generic[Action]):
         self.total_score : list[tuple[int, ...]] = []
         self.action_history : list[tuple[Action, ...]] = []
 
-    def Duel(self) ->  tuple:
+    def Duel(self) -> tuple[Action, ...]:
         return ()
 
 class Prison(Environment):
@@ -20,4 +20,3 @@ class Prison(Environment):
             actions = actions + (player.Make_Move(self.action_history), )
         return actions
 
-        

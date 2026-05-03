@@ -1,9 +1,8 @@
-# from utils.Action import Default_Action_Space
-# from utils.Strategy import Strategy
+from utils.Action import Default_Action_Space
+from utils.Strategy import Strategy
+from utils.Player import Bot_Player
 
-def Dupa(*args):
-    print(len(args))
+s = Strategy()
+d  = Bot_Player(0, Default_Action_Space, s)
 
-a = (1, 2, 3)
-a.append(4)
-print(a)
+print(d.Make_Move([(Default_Action_Space.Betray, Default_Action_Space.Cooperate)]))
