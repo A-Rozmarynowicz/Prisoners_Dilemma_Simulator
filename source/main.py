@@ -20,4 +20,5 @@ score = asc = {k: v for k, v in sorted(score.items(), key=lambda item: -item[1])
 
 winner = next(iter(score.keys()))
 
-print(str(players[winner].Get_Strategy()))
+# print(str(players[winner].Get_Strategy()))
+print(score)

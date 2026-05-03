@@ -33,6 +33,9 @@ class Environment(Generic[Act]):
     def Get_Action_History(self) -> Action_History:
         return self.action_history
 
+    def Reset(self) -> None:
+        return
+
 class Prison(Environment[Prison_Actions]):
     def __init__(self):
         super().__init__()

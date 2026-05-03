@@ -36,3 +36,5 @@ class Always_Cooperate(Prison_Strategy):
 
     def Make_Move(self, ID, action_history, total_games : int):
         return pacts.Cooperate
+
+# class Optimistic_Unforgiving(Prison_Strategy):
