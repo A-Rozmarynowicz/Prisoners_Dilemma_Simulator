@@ -38,10 +38,12 @@ class Game_Master():
 
         for s0 in range(0, len(ss)):
             for s1 in range(s0+1, len(ss)):
+                id0 = list(ss.keys())[s0]
+                id1 = list(ss.keys())[s1]
                 rewards, actions = self.environment.Duel(total_games_param,
                                                         game_index,
-                                                        self.duel_matrix.Get_Action_History((s0, s1)),
-                                                        ss[list(ss.keys())[s0]],
-                                                        ss[list(ss.keys())[s1]])
+                                                        self.duel_matrix.Get_Action_History((id0, id1)),
+                                                        ss[id0],
+                                                        ss[id1])
                 self.duel_matrix.Append_Strategy_Actions(actions)
                 self.rewards.Store_Duel_Rewards(rewards)

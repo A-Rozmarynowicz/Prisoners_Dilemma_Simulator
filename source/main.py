@@ -7,10 +7,11 @@ prison = Prison()
 actions = prison.Get_Actions()
 
 strategies = {
-    0: Random_Strategy(0, actions),
-    1: Always_Betray(1, actions),
-    2: Always_Cooperate(2, actions),
-    3: Random_Strategy(3, actions, p_coop=0.1),
+    0 : Patient_Unforgiving(0, actions),
+    # 0: Random_Strategy(0, actions),
+    2: Always_Betray(2, actions),
+    # 2: Always_Cooperate(2, actions),
+    # 3: Random_Strategy(3, actions, p_coop=0.1),
 }
 
 gm = Game_Master(prison, strategies=strategies)
@@ -19,9 +20,9 @@ duel_matrix, rewards = gm.Tournament(4, Game_Master.Game_Type.All_Vs_All, True, 
 rewards.Sort_Total_Rewards()
 winner = next(iter(rewards.Get_Total_Rewards()))
 
-print(rewards.Get_Duel_Rewards((1, 0)))
-print(duel_matrix.Get_Action_History((1, 0)).Get_Action_History())
+print(strategies[winner])
 
+print(duel_matrix.Get_Action_History((0, 2)).Get_Action_History())
 
 # # print(duel_matrix.Get_Action_Statistics_Of_Strategy(1))
 

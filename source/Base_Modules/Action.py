@@ -34,9 +34,16 @@ class Action_History(Generic[Act]):
             self.action_history[id] = []
         return self.action_history[id]
 
-    def Get_Ally_Enemy_Actions(self, ally_id : int) -> tuple[list[Act], tuple[list[Act]]]:
+    def Get_Ally_Enemy_Actions(self, ally_id : int) -> tuple[list[Act], dict[list[Act]]]:
+        if len(self.action_history) == 0:
+            return ([], {})
         ally_actions = self.__get_and_create_action_entry(ally_id)
-        enemy_actions = {i:self.action_history[i] for i in self.action_history if i!=ally_id}
+        enemy_actions = {}
+        for i in self.action_history:
+            if i==ally_id:
+                continue
+            enemy_actions[i] = self.__get_and_create_action_entry(i)
+
         return (ally_actions, enemy_actions)
 
     def Get_Strategy_All_Actions(self, strategy_ID : int) -> list[Act]:

@@ -29,7 +29,21 @@ class Always_Cooperate(Prison_Strategy):
     def Make_Move(self, total_games, game_index, action_history):
         return pacts.Cooperate
 
-class Optimistic_Unforgiving(Prison_Strategy):
+class Patient_Unforgiving(Prison_Strategy):
+    def __init__(self, ID, actions, patience : int = 1):
+        super().__init__(ID, actions)
+        self.patience = patience
+
+    def __str__(self):
+        return super().__str__() + f" (patience={self.patience})"
+
     def Make_Move(self, total_games, game_index, action_history):
-        
-        return super().Make_Move(total_games, game_index, action_history)
+        _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
+        enemy_actions = enemy_actions.values()
+        betray_count = 0
+        for ea in enemy_actions:
+            if ea == pacts.Betray:
+                betray_count += 1
+                if betray_count >= self.patience:
+                    return pacts.Betray
+        return pacts.Cooperate
