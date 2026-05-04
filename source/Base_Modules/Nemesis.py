@@ -1,3 +1,4 @@
+from Base_Modules.Strategy import Strategy
 
 class Nemesis_Criterion():
     @classmethod
@@ -11,7 +12,14 @@ class Nemesis_Criterion():
                 strategy_nemesis[id] = cls.Criterion(id=id, enemy_id=enemy_id, nemesis=strategy_nemesis[id], new_result=results)
         return strategy_nemesis
 
-    
+    @staticmethod
+    def Translate_Nemesis_To_Strategy_Names(strategies : dict[int, Strategy], nemesis : dict[int, tuple]) ->  dict[int, dict[int, int]]:
+        name_nemesis = {}
+        for (id, nem) in nemesis.items():
+            enemy, results = nem
+            results = {str(strategies[k]):v for k,v in results.items()}
+            name_nemesis[str(strategies[id])] = (str(strategies[enemy]), results)
+        return name_nemesis
 
     @staticmethod
     def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]) -> tuple[int, dict[int, int]]:
