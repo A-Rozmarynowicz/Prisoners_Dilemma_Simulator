@@ -8,17 +8,25 @@ class Nemesis_Criterion():
                 enemy_id = ([i for i in duel_ids if i != id])[0]
                 if strategy_nemesis.get(id) == None:
                     strategy_nemesis[id] = (enemy_id, {id : float("inf"), enemy_id : -float("inf")})
-                strategy_nemesis[id] = cls.Criterion(id, enemy_id, strategy_nemesis[id], results)
+                strategy_nemesis[id] = cls.Criterion(id=id, enemy_id=enemy_id, nemesis=strategy_nemesis[id], new_result=results)
         return strategy_nemesis
+
+    
 
     @staticmethod
     def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]) -> tuple[int, dict[int, int]]:
         pass
 
 class Nemesis_Worst_Score(Nemesis_Criterion):
-
     @staticmethod
     def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]):
         if new_result[id] < nemesis[1][id]:
+            return (enemy_id, new_result)
+        return nemesis
+
+class Nemesis_Best_Enemy_Score(Nemesis_Criterion):
+    @staticmethod
+    def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]):
+        if new_result[enemy_id] > nemesis[1][nemesis[0]]:
             return (enemy_id, new_result)
         return nemesis
