@@ -24,12 +24,20 @@ class Action_History(Generic[Act]):
                 if id not in self.action_history.keys():
                     raise ValueError("Action History tried to append an invalid key.")
         for (id, action) in strategy_actions.items():
-            if self.action_history.get(id) == None:
-                self.action_history[id] = [action]
-            else:
-                self.action_history[id].append(action)
+            self.__get_and_create_action_entry(id)
+            self.action_history[id].append(action)
             if len(self.action_history[id]) > self.max_memory and self.max_memory > 0:
                 self.action_history[id].pop(0)
+
+    def __get_and_create_action_entry(self, id :int) -> list[Act]:
+        if self.action_history.get(id) == None:
+            self.action_history[id] = []
+        return self.action_history[id]
+
+    def Get_Ally_Enemy_Actions(self, ally_id : int) -> tuple[list[Act], tuple[list[Act]]]:
+        ally_actions = self.__get_and_create_action_entry(ally_id)
+        enemy_actions = {i:self.action_history[i] for i in self.action_history if i!=ally_id}
+        return (ally_actions, enemy_actions)
 
     def Get_Strategy_All_Actions(self, strategy_ID : int) -> list[Act]:
         return self.action_history[strategy_ID]
