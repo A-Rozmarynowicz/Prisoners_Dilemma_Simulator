@@ -23,5 +23,9 @@ winner = next(iter(score.keys()))
 print(str(strategies[winner]))
 print(score)
 
-print(duel_matrix.Get_Action_History((0, 3)).Get_Action_History())
+print(duel_matrix.Get_Action_Statistics_Of_Strategy(1))
+
+# for ah1 in duel_matrix.Get_All_Duels_Of_Strategy(1):
+#     print(ah1.Get_Action_History())
+#     print("\n")
 

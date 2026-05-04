@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import TypeVar
 from typing import Type, Generic
+from collections import defaultdict
 
 class Actions(Enum):
     pass
@@ -27,7 +28,7 @@ class Action_History(Generic[Act]):
             else:
                 self.action_history[id].append(action)
 
-    def Get_All_Strategy_Actions(self, strategy_ID : int) -> list[Act]:
+    def Get_Strategy_All_Actions(self, strategy_ID : int) -> list[Act]:
         return self.action_history[strategy_ID]
 
     def Get_Action_History(self) -> dict[int, list[Act]]:
@@ -51,3 +52,17 @@ class Duel_Matrix(Generic[Act]):
         if self.duel_matrix.get(strategy_ids_tuple) == None:
             self.duel_matrix[strategy_ids_tuple] = Action_History[Act]()
         return self.duel_matrix[strategy_ids_tuple]
+
+    def Get_All_Duels_Of_Strategy(self, strategy_id : int) -> list[Action_History]:
+        all_duels : list[Action_History] = []
+        for (strategies_ids, action_history) in self.duel_matrix.items():
+            if strategy_id in strategies_ids:
+                all_duels.append(action_history)
+        return all_duels
+
+    def Get_Action_Statistics_Of_Strategy(self, strategy_id : int) -> dict[Act, int]:
+        stats = defaultdict(int)
+        for ah in self.Get_All_Duels_Of_Strategy(strategy_id):
+            for action in ah.Get_Strategy_All_Actions(strategy_id):
+                stats[action] += 1
+        return stats
