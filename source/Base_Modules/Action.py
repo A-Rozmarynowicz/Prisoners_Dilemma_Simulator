@@ -13,9 +13,10 @@ class Prison_Actions(Actions):
 Act = TypeVar("Act", bound=Actions)
 
 class Action_History(Generic[Act]):
-    def __init__(self):
+    def __init__(self, max_memory : int = -1):
         super().__init__()
         self.action_history : dict[int, list[Act]] = {}
+        self.max_memory = max_memory
 
     def Append_Strategy_Actions(self, strategy_actions : dict[int, Act]) -> None:
         if len(self.action_history) != 0:
@@ -27,6 +28,8 @@ class Action_History(Generic[Act]):
                 self.action_history[id] = [action]
             else:
                 self.action_history[id].append(action)
+            if len(self.action_history[id]) > self.max_memory and self.max_memory > 0:
+                self.action_history[id].pop(0)
 
     def Get_Strategy_All_Actions(self, strategy_ID : int) -> list[Act]:
         return self.action_history[strategy_ID]
@@ -35,22 +38,23 @@ class Action_History(Generic[Act]):
         return self.action_history
 
 class Duel_Matrix(Generic[Act]):
-    def __init__(self):
+    def __init__(self, max_memory : int = -1):
         super().__init__()
         self.duel_matrix : dict[tuple[int, ...], Action_History[Act]] = {}
+        self.max_memory = max_memory
 
     def Append_Strategy_Actions(self,  strategy_actions : dict[int, Act]) -> None:
         if len(self.duel_matrix) != 0:
             assert(len(next(iter(self.duel_matrix))) ==  len(strategy_actions))
         sorted_indices = tuple(sorted(strategy_actions.keys()))
         if self.duel_matrix.get(sorted_indices) == None:
-            self.duel_matrix[sorted_indices] = Action_History[Act]()
+            self.duel_matrix[sorted_indices] = Action_History[Act](max_memory=self.max_memory)
         self.duel_matrix[sorted_indices].Append_Strategy_Actions(strategy_actions)
 
     def Get_Action_History(self, strategy_ids : tuple) -> Action_History:
         strategy_ids_tuple = tuple(sorted(strategy_ids))
         if self.duel_matrix.get(strategy_ids_tuple) == None:
-            self.duel_matrix[strategy_ids_tuple] = Action_History[Act]()
+            self.duel_matrix[strategy_ids_tuple] = Action_History[Act](max_memory=self.max_memory)
         return self.duel_matrix[strategy_ids_tuple]
 
     def Get_All_Duels_Of_Strategy(self, strategy_id : int) -> list[Action_History]:
