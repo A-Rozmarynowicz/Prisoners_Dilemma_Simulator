@@ -29,10 +29,10 @@ class Action_History(Generic[Act]):
 class Duel_Matrix(Generic[Act]):
     def __init__(self):
         super().__init__()
-        self.duel_matrix = dict[tuple[int, ...], tuple(Act, ...)]
+        self.duel_matrix : dict[tuple[int, ...], Action_History[Act]] = {}
 
-    def Set(self, indices_tuple : tuple[int, ...], actions_tuple : tuple[Act, ...]) -> None:
-        self.duel_matrix[indices_tuple] = actions_tuple
-
-    def Get(self, indices_tuple : tuple[int, ...]) -> tuple[Act, ...]:
-        return self.duel_matrix[indices_tuple]
+    def Append_Strategy_Actions(self,  strategy_actions : dict[int, Act]) -> None:
+        sorted_indices = tuple(sorted(strategy_actions.keys()))
+        if self.duel_matrix.get(sorted_indices) == None:
+            self.duel_matrix[sorted_indices] = Action_History[Act]()
+        self.duel_matrix[sorted_indices].Append_Strategy_Actions(strategy_actions)
