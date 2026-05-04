@@ -60,3 +60,25 @@ class Copycat(Prison_Strategy):
         if len(enemy_actions) > 0:
             return enemy_actions[-1]
         return self.init_action
+
+class Periodic(Prison_Strategy):
+    def __init__(self, actions, ID = -1, period=1):
+        super().__init__(actions, ID)
+        self.period = period
+
+    def __str__(self):
+        return super().__str__() + f" (period={self.period})"
+
+    def Make_Move(self, total_games, game_index, action_history):
+        self_actions, _ = action_history.Get_Ally_Enemy_Actions(self.ID)
+        if len(self_actions) == 0:
+            return pacts.Cooperate
+
+        last_action : pacts = self_actions[-1]
+        counter = 0
+        for a in reversed(self_actions):
+            if a == last_action:
+                counter += 1
+            if counter >= self.period:
+                return last_action.Next()
+        return last_action

@@ -9,6 +9,10 @@ class Actions(Enum):
     def __str__(self):
         return self.name
 
+    def Next(self) -> Actions:
+        members = list(type(self))
+        i = members.index(self)
+        return members[(i + 1) % len(members)]
 
 class Prison_Actions(Actions):
     Cooperate = 0
