@@ -15,13 +15,13 @@ strategies = {
 
 gm = Game_Master(prison, strategies=strategies)
 
-duel_matrix, score = gm.Tournament(4, Game_Master.Game_Type.All_Vs_All, True, 2)
-score = asc = {k: v for k, v in sorted(score.items(), key=lambda item: -item[1])}
+duel_matrix, rewards = gm.Tournament(4, Game_Master.Game_Type.All_Vs_All, True, 2)
+rewards.Sort_Total_Rewards()
+winner = next(iter(rewards.Get_Total_Rewards()))
 
-winner = next(iter(score.keys()))
+print(rewards.Get_Duel_Rewards((1, 0)))
+print(duel_matrix.Get_Action_History((1, 0)).Get_Action_History())
 
-# print(str(strategies[winner]))
-# print(score)
 
 # print(duel_matrix.Get_Action_Statistics_Of_Strategy(1))
 

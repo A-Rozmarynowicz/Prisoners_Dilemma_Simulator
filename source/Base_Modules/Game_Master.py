@@ -1,6 +1,7 @@
 from Base_Modules.Environments import Environment
 from Base_Modules.Strategy import Strategy
 from Base_Modules.Action import Duel_Matrix
+from Base_Modules.Rewards import Reward
 from enum import Enum
 from collections import defaultdict
 
@@ -17,7 +18,7 @@ class Game_Master():
         self.environment : Environment = environment
         self.strategies : dict[int, Strategy] = strategies
         self.duel_matrix = Duel_Matrix()
-        self.total_rewards = defaultdict(int)
+        self.rewards = Reward()
 
     def Tournament(self,
                     total_games : int,
@@ -30,7 +31,7 @@ class Game_Master():
             case Game_Master.Game_Type.All_Vs_All:
                 for game_index in range(0, total_games):
                     self.All_Vs_All_Match(total_games_param, game_index, duel_size)
-        return self.duel_matrix, self.total_rewards
+        return self.duel_matrix, self.rewards
 
     def All_Vs_All_Match(self, total_games_param : int, game_index : int, duel_size : int):
         ss = self.strategies
@@ -43,5 +44,4 @@ class Game_Master():
                                                         ss[list(ss.keys())[s0]],
                                                         ss[list(ss.keys())[s1]])
                 self.duel_matrix.Append_Strategy_Actions(actions)
-                for (id, r) in rewards.items():
-                    self.total_rewards[id] += r
+                self.rewards.Store_Duel_Rewards(rewards)
