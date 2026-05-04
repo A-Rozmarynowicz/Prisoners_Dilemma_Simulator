@@ -52,24 +52,32 @@ class Action_History(Generic[Act]):
     def Get_Action_History(self) -> dict[int, list[Act]]:
         return self.action_history
 
+class Action_History_1v1(Action_History, Generic[Act]):
+    def Get_Ally_Enemy_Actions(self, ally_id) -> tuple[list[Act], list[Act]]:
+        a, e = super().Get_Ally_Enemy_Actions(ally_id)
+        if len(e) != 0:
+            e = list(e.values())[0]
+        return a, e
+
 class Duel_Matrix(Generic[Act]):
-    def __init__(self, max_memory : int = -1):
+    def __init__(self, duel_size : int, max_memory : int = -1):
         super().__init__()
         self.duel_matrix : dict[tuple[int, ...], Action_History[Act]] = {}
         self.max_memory = max_memory
+        self.duel_size = duel_size
 
     def Append_Strategy_Actions(self,  strategy_actions : dict[int, Act]) -> None:
         if len(self.duel_matrix) != 0:
             assert(len(next(iter(self.duel_matrix))) ==  len(strategy_actions))
         sorted_indices = tuple(sorted(strategy_actions.keys()))
         if self.duel_matrix.get(sorted_indices) == None:
-            self.duel_matrix[sorted_indices] = Action_History[Act](max_memory=self.max_memory)
+            self.duel_matrix[sorted_indices] = self._create_action_history_object()
         self.duel_matrix[sorted_indices].Append_Strategy_Actions(strategy_actions)
 
     def Get_Action_History(self, strategy_ids : tuple) -> Action_History:
         strategy_ids_tuple = tuple(sorted(strategy_ids))
         if self.duel_matrix.get(strategy_ids_tuple) == None:
-            self.duel_matrix[strategy_ids_tuple] = Action_History[Act](max_memory=self.max_memory)
+            self.duel_matrix[strategy_ids_tuple] = self._create_action_history_object()
         return self.duel_matrix[strategy_ids_tuple]
 
     def Get_All_Duels_Of_Strategy(self, strategy_id : int) -> list[Action_History]:
@@ -85,3 +93,9 @@ class Duel_Matrix(Generic[Act]):
             for action in ah.Get_Strategy_All_Actions(strategy_id):
                 stats[action] += 1
         return stats
+
+    def _create_action_history_object(self) -> Action_History:
+        if self.duel_size == 2:
+            return Action_History_1v1[Act](max_memory=self.max_memory)
+        else:
+            return Action_History[Act](max_memory=self.max_memory)

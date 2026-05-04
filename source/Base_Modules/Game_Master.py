@@ -14,23 +14,24 @@ class Game_Master():
             self,
             environment : Environment,
             strategies : list[Strategy],
+            duel_size : int,
     ):
         self.environment : Environment = environment
         self.strategies : dict[int, Strategy] = strategies
-        self.duel_matrix = Duel_Matrix()
+        self.duel_size = duel_size
+        self.duel_matrix = Duel_Matrix(duel_size=duel_size)
         self.rewards = Reward()
 
     def Tournament(self,
                     total_games : int,
                     game_type : "Game_Master.Game_Type",
                     total_games_explicit : bool,
-                    duel_size : int,
                     ):
         total_games_param = total_games if total_games_explicit else -1
         match game_type:
             case Game_Master.Game_Type.All_Vs_All:
                 for game_index in range(0, total_games):
-                    self.All_Vs_All_Match(total_games_param, game_index, duel_size)
+                    self.All_Vs_All_Match(total_games_param, game_index, self.duel_size)
         return self.duel_matrix, self.rewards
 
     def All_Vs_All_Match(self, total_games_param : int, game_index : int, duel_size : int):

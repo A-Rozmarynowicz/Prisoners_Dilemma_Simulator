@@ -39,7 +39,6 @@ class Patient_Unforgiving(Prison_Strategy):
 
     def Make_Move(self, total_games, game_index, action_history):
         _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
-        enemy_actions = enemy_actions.values()
         betray_count = 0
         for ea in enemy_actions:
             if ea == pacts.Betray:

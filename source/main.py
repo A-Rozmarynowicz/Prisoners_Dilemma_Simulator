@@ -9,14 +9,14 @@ actions = prison.Get_Actions()
 strategies = {
     0 : Patient_Unforgiving(0, actions),
     # 0: Random_Strategy(0, actions),
-    2: Always_Betray(2, actions),
-    # 2: Always_Cooperate(2, actions),
+    # 2: Always_Betray(2, actions),
+    2: Always_Cooperate(2, actions),
     # 3: Random_Strategy(3, actions, p_coop=0.1),
 }
 
-gm = Game_Master(prison, strategies=strategies)
+gm = Game_Master(prison, strategies=strategies, duel_size=2)
 
-duel_matrix, rewards = gm.Tournament(4, Game_Master.Game_Type.All_Vs_All, True, 2)
+duel_matrix, rewards = gm.Tournament(4, Game_Master.Game_Type.All_Vs_All, True)
 rewards.Sort_Total_Rewards()
 winner = next(iter(rewards.Get_Total_Rewards()))
 
