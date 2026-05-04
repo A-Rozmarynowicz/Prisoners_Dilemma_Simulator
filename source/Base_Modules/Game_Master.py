@@ -15,11 +15,12 @@ class Game_Master():
             environment : Environment,
             strategies : list[Strategy],
             duel_size : int,
+            max_action_memory : int=-1
     ):
         self.environment : Environment = environment
         self.strategies : dict[int, Strategy] = strategies
         self.duel_size = duel_size
-        self.duel_matrix = Duel_Matrix(duel_size=duel_size)
+        self.duel_matrix = Duel_Matrix(duel_size=duel_size, max_memory=max_action_memory)
         self.rewards = Reward()
 
     def Tournament(self,
