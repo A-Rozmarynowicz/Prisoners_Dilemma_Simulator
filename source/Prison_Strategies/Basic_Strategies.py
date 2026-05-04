@@ -8,7 +8,7 @@ class Prison_Strategy(Strategy[pacts]):
         return list(pacts)[0]
 
 class Random_Strategy(Prison_Strategy):
-    def __init__(self, ID, actions, p_coop: float = 0.5):
+    def __init__(self, actions, ID=-1, p_coop: float = 0.5):
         super().__init__(ID, actions)
         self.p = p_coop
 
@@ -30,7 +30,7 @@ class Always_Cooperate(Prison_Strategy):
         return pacts.Cooperate
 
 class Patient_Unforgiving(Prison_Strategy):
-    def __init__(self, ID, actions, patience : int = 1):
+    def __init__(self, actions, ID=-1, patience : int = 1):
         super().__init__(ID, actions)
         self.patience = patience
 
@@ -46,3 +46,17 @@ class Patient_Unforgiving(Prison_Strategy):
                 if betray_count >= self.patience:
                     return pacts.Betray
         return pacts.Cooperate
+
+class Copycat(Prison_Strategy):
+    def __init__(self, actions, ID=-1, init_action : pacts = pacts.Cooperate):
+        super().__init__(ID, actions)
+        self.init_action = init_action
+
+    def __str__(self):
+        return super().__str__() + f" (1st:{self.init_action})"
+
+    def Make_Move(self, total_games, game_index, action_history):
+        _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
+        if len(enemy_actions) > 0:
+            return enemy_actions[-1]
+        return self.init_action

@@ -3,9 +3,12 @@ from typing import Type, Generic
 import random
 
 class Strategy(Generic[Act]):
-    def __init__(self, ID : int, actions : Type[Act]):
+    def __init__(self, actions : Type[Act], ID : int = -1):
         self.actions = actions
         self.ID = ID
+
+    def Set_ID(self, new_id : int) -> None:
+        self.ID = new_id
 
     def Get_Random_Action(self) -> Act:
         return random.choice(list(self.actions))

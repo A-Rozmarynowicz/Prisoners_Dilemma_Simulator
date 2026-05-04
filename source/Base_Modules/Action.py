@@ -6,6 +6,10 @@ from collections import defaultdict
 class Actions(Enum):
     pass
 
+    def __str__(self):
+        return self.name
+
+
 class Prison_Actions(Actions):
     Cooperate = 0
     Betray = 1
