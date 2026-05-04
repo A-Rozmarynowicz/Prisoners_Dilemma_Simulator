@@ -42,6 +42,6 @@ class Nemesis_Best_Enemy_Score(Nemesis_Criterion):
 class Nemesis_Largest_Difference(Nemesis_Criterion):
     @staticmethod
     def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]):
-        if (new_result[id] - new_result[enemy_id]) > (nemesis[1][id] - nemesis[1][nemesis[0]]):
+        if (new_result[id] - new_result[enemy_id]) < (nemesis[1][id] - nemesis[1][nemesis[0]]):
             return (enemy_id, new_result)
         return nemesis
