@@ -47,5 +47,7 @@ class Duel_Matrix(Generic[Act]):
         self.duel_matrix[sorted_indices].Append_Strategy_Actions(strategy_actions)
 
     def Get_Action_History(self, strategy_ids : tuple) -> Action_History:
-        strategy_ids = tuple(sorted(strategy_ids))
-        return self.duel_matrix[strategy_ids]
+        strategy_ids_tuple = tuple(sorted(strategy_ids))
+        if self.duel_matrix.get(strategy_ids_tuple) == None:
+            self.duel_matrix[strategy_ids_tuple] = Action_History[Act]()
+        return self.duel_matrix[strategy_ids_tuple]
