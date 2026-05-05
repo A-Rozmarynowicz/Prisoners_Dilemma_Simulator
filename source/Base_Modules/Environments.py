@@ -37,7 +37,7 @@ class Prison(Environment[Prison_Actions]):
                                *strategies : Prison_Strategy):
         strategies_actions : dict[int, Act]= {}
         for strategy in strategies:
-            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games, game_index=game_index, action_history=action_history)
+            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games, game_index=game_index, action_history=action_history, environment=self)
         return strategies_actions
 
     def Reward(self, strategies_actions):
