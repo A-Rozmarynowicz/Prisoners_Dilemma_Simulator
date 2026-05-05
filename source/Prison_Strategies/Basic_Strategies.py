@@ -3,6 +3,7 @@ from Base_Modules.Action import Action_History
 from Base_Modules.Action import Prison_Actions as pacts
 from random import random, choice
 from collections import defaultdict
+import pickle
 
 class Prison_Strategy(Strategy[pacts]):
     def Make_Move(self, total_games : int, game_index : int, action_history : Action_History[Prison_Strategy], environment) -> pacts:
@@ -106,7 +107,7 @@ class Forgiving(Prison_Strategy):
             return pacts.Betray
 
 class Reinforcement_Learning(Prison_Strategy):
-    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.1, lr=0.01, state_size=1):
+    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.99, lr=0.1, state_size=5, register_enemy_ID=False):
         super().__init__(actions, ID)
         self.q_table = defaultdict(float)
         self.eps = eps
@@ -119,6 +120,15 @@ class Reinforcement_Learning(Prison_Strategy):
         self.last_action = pacts.Cooperate
         self.last_state = tuple()
         self.eval = False
+        self.register_enemy_ID = register_enemy_ID
+
+    def Save_Q_Table(self, filename : str) -> None:
+        with open(filename, "wb") as f:
+            pickle.dump(self.q_table, f)
+
+    def Load_Q_Table(self, filename : str) -> None:
+        with open(filename, "rb") as f:
+            self.q_table = pickle.load(f)
 
     def Eval(self) -> None:
         self.eval = True
@@ -133,17 +143,20 @@ class Reinforcement_Learning(Prison_Strategy):
         self.last_state = tuple()
         self.eval = False
 
-    def Update_Q_Table(self, last_state : tuple, new_state : tuple, last_action : pacts, last_reward : float) -> None:
+    def Create_Q_Key(self, s, a, eID) -> tuple:
+        return s + (eID,) + (a,) if self.register_enemy_ID else s + (a,)
+
+    def Update_Q_Table(self, last_state : tuple, new_state : tuple, last_action : pacts, last_reward : float, enemy_ID : int) -> None:
         max_current_state_q = -float("inf")
         for a in list(pacts):
-            max_current_state_q = max(max_current_state_q, self.q_table[new_state + (a,)])
-        delta = last_reward + self.gamma*max_current_state_q - self.q_table[last_state + (last_action,)]
-        self.q_table[last_state + (last_action,)] += self.lr*delta
+            max_current_state_q = max(max_current_state_q, self.q_table[self.Create_Q_Key(s=new_state, a=a, eID=enemy_ID)])
+        delta = last_reward + self.gamma*max_current_state_q - self.q_table[self.Create_Q_Key(s=last_state, a=last_action,eID=enemy_ID)]
+        self.q_table[self.Create_Q_Key(s=last_state, a=last_action, eID=enemy_ID)] += self.lr*delta
 
-    def Choose_Action(self, state : tuple) -> pacts:
+    def Choose_Action(self, state : tuple, enemy_ID : int) -> pacts:
         sa_reward = {}
         for a in list(pacts):
-            sa_reward[a] = self.q_table[state + (a,)]
+            sa_reward[a] = self.q_table[self.Create_Q_Key(state, a, enemy_ID)]
 
         if random() < self.eps and not self.eval:
             action = choice(list(pacts))
@@ -166,14 +179,15 @@ class Reinforcement_Learning(Prison_Strategy):
         for i in range(min(self.state_size, len(enemy_actions))):
             state = state + (self_actions[-i-1], )
 
-        enemy_id = [i for i in action_history.Get_Action_History().keys() if i != self.ID][0]
-        last_reward = environment.Reward({
-            self.ID : self_actions[-1],
-            enemy_id : enemy_actions[-1]
-            })[0]
-        self.Update_Q_Table(self.last_state, state, self.last_action, last_reward=last_reward)
-
         action = self.Choose_Action(state=state)
+
+        if not self.eval:
+            enemy_id = [i for i in action_history.Get_Action_History().keys() if i != self.ID][0]
+            last_reward = environment.Reward({
+                self.ID : self_actions[-1],
+                enemy_id : enemy_actions[-1]
+                })[0]
+            self.Update_Q_Table(self.last_state, state, self.last_action, last_reward=last_reward)
 
         self.last_state = state
         self.last_action = action
