@@ -21,3 +21,6 @@ class Strategy(Generic[Act]):
 
     def __str__(self):
         return f"({self.ID}):" + self.__class__.__name__
+
+    def Reset(self) -> None:
+        return

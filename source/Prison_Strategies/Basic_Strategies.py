@@ -82,3 +82,14 @@ class Periodic(Prison_Strategy):
             if counter >= self.period:
                 return last_action.Next()
         return last_action
+
+class Forgiving(Prison_Strategy):
+    def __init__(self, actions, ID = -1, p_forgive=0.1):
+        super().__init__(actions, ID)
+        self.p_forgive=-p_forgive
+
+    def __str__(self):
+        return super().__str__() + f" (p_forgive={self.p_forgive})"
+
+    def Make_Move(self, total_games, game_index, action_history):
+        return super().Make_Move(total_games, game_index, action_history)
