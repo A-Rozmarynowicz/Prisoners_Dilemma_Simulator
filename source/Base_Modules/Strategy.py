@@ -20,4 +20,4 @@ class Strategy(Generic[Act]):
         return self.ID
 
     def __str__(self):
-        return self.__class__.__name__
+        return f"({self.ID}):" + self.__class__.__name__
