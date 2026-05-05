@@ -25,9 +25,8 @@ class Game_Master():
         self.rewards = Reward()
 
     def Reset(self) -> None:
-        for strategy in self.strategies:
-            strategy.Reset()
         self.duel_matrix = Duel_Matrix(duel_size=self.duel_size, max_memory=self.max_action_memory)
+        self.rewards = Reward()
 
     def Tournament(self,
                     total_games : int,

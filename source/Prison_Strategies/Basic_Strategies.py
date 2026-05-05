@@ -106,7 +106,7 @@ class Forgiving(Prison_Strategy):
             return pacts.Betray
 
 class Reinforcement_Learning(Prison_Strategy):
-    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.1, lr=0.01, state_size=10):
+    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.1, lr=0.01, state_size=1):
         super().__init__(actions, ID)
         self.q_table = defaultdict(float)
         self.eps = eps
@@ -118,19 +118,39 @@ class Reinforcement_Learning(Prison_Strategy):
         self.state_size = state_size
         self.last_action = pacts.Cooperate
         self.last_state = tuple()
+        self.eval = False
+
+    def Eval(self) -> None:
+        self.eval = True
+
+    def Train(self) -> None:
+        self.eval = False
 
     def Reset(self):
         self.eps = self.eps_init
         self.q_table = defaultdict(float)
         self.last_action = pacts.Cooperate
         self.last_state = tuple()
+        self.eval = False
 
-    def Update_Q_Table(self, last_state : tuple, new_state : tuple, last_action : pacts, reward : float) -> None:
+    def Update_Q_Table(self, last_state : tuple, new_state : tuple, last_action : pacts, last_reward : float) -> None:
         max_current_state_q = -float("inf")
         for a in list(pacts):
             max_current_state_q = max(max_current_state_q, self.q_table[new_state + (a,)])
-        delta = reward + self.gamma*max_current_state_q - self.q_table[last_state + (last_action,)]
-        self.q_table[last_state + (last_action)] += self.lr*delta
+        delta = last_reward + self.gamma*max_current_state_q - self.q_table[last_state + (last_action,)]
+        self.q_table[last_state + (last_action,)] += self.lr*delta
+
+    def Choose_Action(self, state : tuple) -> pacts:
+        sa_reward = {}
+        for a in list(pacts):
+            sa_reward[a] = self.q_table[state + (a,)]
+
+        if random() < self.eps and not self.eval:
+            action = choice(list(pacts))
+        else:
+            action = max(sa_reward, key=sa_reward.get)
+
+        return action
 
     def Make_Move(self, total_games, game_index, action_history, environment):
         self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
@@ -146,16 +166,14 @@ class Reinforcement_Learning(Prison_Strategy):
         for i in range(min(self.state_size, len(enemy_actions))):
             state = state + (self_actions[-i-1], )
 
-        self.Update_Q_Table(self.last_state, state, self.last_action, environment.Reward(self_actions[-1], enemy_actions[-1])[0])
+        enemy_id = [i for i in action_history.Get_Action_History().keys() if i != self.ID][0]
+        last_reward = environment.Reward({
+            self.ID : self_actions[-1],
+            enemy_id : enemy_actions[-1]
+            })[0]
+        self.Update_Q_Table(self.last_state, state, self.last_action, last_reward=last_reward)
 
-        sa_reward = {}
-        for a in list(pacts):
-            sa_reward[a] = self.q_table[state + (a,)]
-
-        if random() < self.eps:
-            action = choice(list(pacts))
-        else:
-            action = max(sa_reward, key=sa_reward.get)
+        action = self.Choose_Action(state=state)
 
         self.last_state = state
         self.last_action = action
