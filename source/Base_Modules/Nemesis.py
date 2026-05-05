@@ -61,3 +61,10 @@ class Friend_Best_Total_Score(Friend_Criterion):
         if (new_result[id] + new_result[enemy_id]) > (nemesis[1][id] + nemesis[1][nemesis[0]]):
             return (enemy_id, new_result)
         return nemesis
+
+class Friend_Best_Own_Score(Friend_Criterion):
+    @staticmethod
+    def Criterion(id : int, enemy_id : int, nemesis : tuple[int, dict[int, int]], new_result : dict[int, int]):
+        if (new_result[id]) > (nemesis[1][id]):
+            return (enemy_id, new_result)
+        return nemesis

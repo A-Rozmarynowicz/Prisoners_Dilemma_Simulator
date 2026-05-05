@@ -53,7 +53,7 @@ class Copycat(Prison_Strategy):
         self.init_action = init_action
 
     def __str__(self):
-        return super().__str__() + f" (1st:{self.init_action})"
+        return super().__str__() + f" (1st={self.init_action})"
 
     def Make_Move(self, total_games, game_index, action_history):
         _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
