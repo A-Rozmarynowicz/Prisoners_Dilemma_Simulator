@@ -5,7 +5,7 @@ from collections import defaultdict
 import pickle
 
 class Q_Learning(Prison_Strategy):
-    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.99, lr=0.1, state_size=2, register_enemy_ID=False):
+    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.99, lr=0.1, state_size=2, register_enemy_ID=False, eps_eval = 0.0001):
         super().__init__(actions, ID)
         self.q_table = defaultdict(float)
         self.eps = eps
@@ -19,6 +19,7 @@ class Q_Learning(Prison_Strategy):
         self.last_state = tuple()
         self.eval = False
         self.register_enemy_ID = register_enemy_ID
+        self.eps_eval = eps_eval
 
     def Save_Q_Table(self, filename : str) -> None:
         with open(filename, "wb") as f:
@@ -30,6 +31,7 @@ class Q_Learning(Prison_Strategy):
                 "eps" : self.eps,
                 "eps_decay" : self.eps_decay,
                 "eps_min" : self.eps_min,
+                "eps_eval" : self.eps_eval,
                 "lr" : self.lr,
                 "gamma": self.gamma
             }
@@ -69,7 +71,9 @@ class Q_Learning(Prison_Strategy):
         for a in list(pacts):
             sa_reward[a] = self.q_table[self.Create_Q_Key(state, a, enemy_ID)]
 
-        if random() < self.eps and not self.eval:
+        e = self.eps if not self.eval else self.eps_eval
+
+        if random() < e:
             action = choice(list(pacts))
         else:
             action = max(sa_reward, key=sa_reward.get)

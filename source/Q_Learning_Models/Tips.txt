@@ -1,6 +1,7 @@
 Best:
-- state_size = 2
+- state_size = 1
 - lr = 0.1
 - gamma = 0.99
 - eps_decay = 0.999
 - register enemy ID = False
+- eps_eval = 0.0
