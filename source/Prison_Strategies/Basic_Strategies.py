@@ -1,7 +1,9 @@
 from Base_Modules.Strategy import Strategy
 from Base_Modules.Action import Action_History
 from Base_Modules.Action import Prison_Actions as pacts
-from random import random
+from Base_Modules.Environments import Prison
+from random import random, choice
+from collections import defaultdict
 
 class Prison_Strategy(Strategy[pacts]):
     def Make_Move(self, total_games : int, game_index : int, action_history : Action_History[Prison_Strategy]) -> pacts:
@@ -103,3 +105,28 @@ class Forgiving(Prison_Strategy):
             if random() < self.p_forgive:
                 return pacts.Cooperate
             return pacts.Betray
+
+class Reinforcement_Learning(Prison_Strategy):
+    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.1, lr=0.01):
+        super().__init__(actions, ID)
+        self.q_table = defaultdict(float)
+        self.eps = eps
+        self.eps_init = eps
+        self.eps_decay = eps_decay
+        self.eps_min = eps_min
+        self.gamma=gamma
+        self.lr=lr
+        self.env = Prison()
+
+    def Reset(self):
+        self.eps = self.eps_init
+
+    def Make_Move(self, total_games, game_index, action_history):
+        self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
+
+        if game_index == 0:
+            return choice(list(pacts))
+
+        
+
+
