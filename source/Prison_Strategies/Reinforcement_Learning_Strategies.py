@@ -5,7 +5,7 @@ from collections import defaultdict
 import pickle
 
 class Q_Learning(Prison_Strategy):
-    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.99, lr=0.1, state_size=5, register_enemy_ID=False):
+    def __init__(self, actions, ID = -1, eps=0.9, eps_decay=0.999, eps_min=0.005, gamma=0.9, lr=0.1, state_size=5, register_enemy_ID=False):
         super().__init__(actions, ID)
         self.q_table = defaultdict(float)
         self.eps = eps
