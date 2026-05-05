@@ -76,11 +76,21 @@ class Q_Learning(Prison_Strategy):
 
         return action
 
+    def Choose_1st_Action(self) -> pacts:
+        # return pacts.Cooperate
+        if len(self.q_table) == 0:
+            return choice(list(pacts))
+        max_reward_per_a = defaultdict(float)
+        for key in self.q_table.keys():
+            if len(key) <= 2 and len(key) > 0:
+                max_reward_per_a[key[0]] = max(max_reward_per_a[key[0]], self.q_table[key])
+        return max(max_reward_per_a, key=max_reward_per_a.get)
+
     def Make_Move(self, total_games, game_index, action_history, environment):
         self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
 
         if game_index == 0:
-            self.last_action = choice(list(pacts))
+            self.last_action = self.Choose_1st_Action()
             self.last_state = tuple()
             return self.last_action
 
