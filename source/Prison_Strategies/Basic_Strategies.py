@@ -89,7 +89,7 @@ class Forgiving(Prison_Strategy):
     def __init__(self, actions, ID = -1, p_forgive=0.1):
         super().__init__(actions, ID)
         self.p_forgive=p_forgive
-        self.try_coop = False
+        self.try_coop = defaultdict(lambda:False)
 
     def __str__(self):
         return super().__str__() + f" (p_forgive={self.p_forgive})"
@@ -98,17 +98,18 @@ class Forgiving(Prison_Strategy):
         self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
 
         if game_index == 0:
-            self.try_coop = False
             return pacts.Cooperate
 
+        enemy_id = [i for i in action_history.Get_Action_History().keys() if i != self.ID][0]
+
         if self_actions[-1] == pacts.Cooperate:
-            if self.try_coop:
-                self.try_coop = False
+            if self.try_coop[enemy_id]:
+                self.try_coop[enemy_id] = False
                 return pacts.Cooperate
             return enemy_actions[-1]
         else:
             if random() < self.p_forgive:
-                self.try_coop = True
+                self.try_coop[enemy_id] = True
                 return pacts.Cooperate
             return pacts.Betray
 
