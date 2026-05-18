@@ -21,3 +21,5 @@ Simulation of the Prisoner's Dilemma with various strategies (including a Reinfo
 Q-Learning and the Unforgiving strategy (one that always cooperates until the opponent betrays, after which it betrays until the end of the game) managed to outperform all other strategies in most of the games. By analysing the Q-table, however, one can see that the Q-Learning has learned to mimic the Unforgiving strategy. This contradicts the results obtained by [Veritasium](https://www.youtube.com/watch?v=mScpHTIi-kM), where its team found out that the Forgiving strategy tends to do better. The reason for this is the fact that the optimal strategy depends on who the other players are.
 
 Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes with more information.
+
+*This README is under construction.*
