@@ -82,7 +82,7 @@ Oscillates between actions with a period k.
 Cooperates with a probability 'p' (parameter), else betrays.
 
 ### Q-Learning
-Its choices are determined by a q-table generated during traning. It was trained in tournaments against the same players it was tested with. Its observation were opponents past 'k' actions, and its own past 'k' actions. During the training it showed that in this scenario, it need only one pair of past choices.
+Its choices are determined by a q-table generated during traning. It was trained in tournaments against the same players it was tested with. Its observation were opponents past 'k' actions, and its own past 'k' actions. During the training it showed that in this scenario, it only needs one pair of past choices.
 
 
 ## Results
@@ -91,6 +91,116 @@ Q-Learning and the Unforgiving strategy (one that always cooperates until the op
 Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes with more information.
 
 *This README is under construction.*
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Average score</th>
+      <th>Fraction of Co-ops</th>
+      <th>Nemesis</th>
+      <th>Friend</th>
+    </tr>
+    <tr>
+      <th>Place</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>Patient_Unforgiving (patience=1)</td>
+      <td>2.26</td>
+      <td>0.51</td>
+      <td>Always_Betray</td>
+      <td>Random_Strategy (p_coop=0.5)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Q_Learning</td>
+      <td>2.20</td>
+      <td>0.51</td>
+      <td>Always_Betray</td>
+      <td>Always_Cooperate</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Forgiving (p_forgive=0.1)</td>
+      <td>2.14</td>
+      <td>0.62</td>
+      <td>Always_Betray</td>
+      <td>Patient_Unforgiving (patience=1)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Copycat (1st=Cooperate)</td>
+      <td>2.14</td>
+      <td>0.66</td>
+      <td>Always_Betray</td>
+      <td>Patient_Unforgiving (patience=1)</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Always_Betray</td>
+      <td>1.91</td>
+      <td>0.00</td>
+      <td>Q_Learning</td>
+      <td>Always_Cooperate</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Random_Strategy (p_coop=0.1)</td>
+      <td>1.86</td>
+      <td>0.10</td>
+      <td>Always_Betray</td>
+      <td>Always_Cooperate</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Always_Cooperate</td>
+      <td>1.71</td>
+      <td>1.00</td>
+      <td>Always_Betray</td>
+      <td>Q_Learning</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Random_Strategy (p_coop=0.5)</td>
+      <td>1.39</td>
+      <td>0.49</td>
+      <td>Always_Betray</td>
+      <td>Always_Cooperate</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Periodic (period=4)</td>
+      <td>1.39</td>
+      <td>0.50</td>
+      <td>Always_Betray</td>
+      <td>Always_Cooperate</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ## Technologies used
 - Python
