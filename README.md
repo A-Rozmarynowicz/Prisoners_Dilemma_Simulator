@@ -85,13 +85,13 @@ Its choices are determined by a q-table generated during traning. It was trained
 
 
 ## Results
-Q-Learning and the Unforgiving strategy (one that always cooperates until the opponent betrays, after which it betrays until the end of the game) managed to outperform all other strategies in most of the games. By analysing the Q-table, however, one can see that the Q-Learning has learned to mimic the Unforgiving strategy. This contradicts the results obtained by [Veritasium](https://www.youtube.com/watch?v=mScpHTIi-kM), where its team found out that the Forgiving strategy tends to do better. The reason for this is the fact that the optimal strategy depends on who the other players are.
-
-Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes with more information.
-
-*This README is under construction.*
+Outcome of the tournament is shown in Table 2:
 
 <table border="1" class="dataframe">
+    <caption style="caption-side: bottom; padding-top: 8px;">
+    Table 2: Results of the tournament.
+    </caption>
+
   <thead>
     <tr style="text-align: right;">
       <th>Place</th>
@@ -159,6 +159,25 @@ Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes wit
   </tbody>
 </table>
 </div>
+
+Q-Learning and the Unforgiving managed to outperform all other strategies in most of the games. By analysing the Q-table, however, one can see that the Q-Learning has learned to mimic the Unforgiving strategy. This contradicts the results obtained by [Veritasium](https://www.youtube.com/watch?v=mScpHTIi-kM), where its team found out that the Forgiving strategy tends to do better. This suggests that the optimal strategy is highly dependent on who's playing in the tournament.
+
+Please note that the Q-Learning and the Unforgiving converged to the exact same strategy, and the variations in outcomes are a result of random actions taken by the Random players.
+
+The Forgiving strategy comes right behind 2nd place. Copycat does suprisingly well.
+
+Always Betray is right in the middle. Further analysis of the outcome shows that this stragety has never lost a duel - it always exploits other players' weaknesses. However, everytime it betrays, most of its opponents start to betray forever, thus Always Betray gets a lot of victories but few points. The table with duels outcomes is too large to be put here (refer to the [More details](#more-details) section).
+
+Random with little chance of cooperating is very similar to Always Betray, so it scores 6th. Then comes the naive strategy, showing that it is better to be cold and ruthless than totally naive.
+
+Periodic and random strategies close up the table, with very poor scores.
+
+### More details
+If you are interested in more details, like:
+- outcomes of duels between any two strategies,
+- graphs of actions taken by strategies,
+- q-table values,
+please refer to the [main.ipynb](./source/main.ipynb) notebook for more information.
 
 ## Technologies used
 - Python
