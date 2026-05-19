@@ -31,8 +31,7 @@ The Prisonner's Dilemma is a very famous Game Strategy problem, where two player
     <th></th>
     <th style="border-left:1px solid white;">2nd player decision</th>
     <th style="border-left:1px solid white;"><i>Cooperate</i></th>
-    <th style="border-left:1px solid white;"><i>Betray</i></th>
-    <th style="border-right:1px solid white;" > </th>
+    <th style="border-left:1px solid white; border-right:1px solid white;"><i>Betray</i></th>
   </tr>
   <tr >
     <th><b>1st player decision</b></th>
@@ -92,20 +91,6 @@ Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes wit
 
 *This README is under construction.*
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -128,40 +113,40 @@ Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes wit
   <tbody>
     <tr>
       <th>1</th>
-      <td>Patient_Unforgiving (patience=1)</td>
-      <td>2.26</td>
+      <td>Q_Learning</td>
+      <td>2.27</td>
       <td>0.51</td>
       <td>Always_Betray</td>
       <td>Random_Strategy (p_coop=0.5)</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Q_Learning</td>
-      <td>2.20</td>
+      <td>Patient_Unforgiving (patience=1)</td>
+      <td>2.22</td>
       <td>0.51</td>
       <td>Always_Betray</td>
-      <td>Always_Cooperate</td>
+      <td>Q_Learning</td>
     </tr>
     <tr>
       <th>3</th>
       <td>Forgiving (p_forgive=0.1)</td>
-      <td>2.14</td>
-      <td>0.62</td>
+      <td>2.16</td>
+      <td>0.60</td>
       <td>Always_Betray</td>
-      <td>Patient_Unforgiving (patience=1)</td>
+      <td>Q_Learning</td>
     </tr>
     <tr>
       <th>4</th>
       <td>Copycat (1st=Cooperate)</td>
-      <td>2.14</td>
-      <td>0.66</td>
+      <td>2.08</td>
+      <td>0.63</td>
       <td>Always_Betray</td>
-      <td>Patient_Unforgiving (patience=1)</td>
+      <td>Q_Learning</td>
     </tr>
     <tr>
       <th>5</th>
       <td>Always_Betray</td>
-      <td>1.91</td>
+      <td>1.90</td>
       <td>0.00</td>
       <td>Q_Learning</td>
       <td>Always_Cooperate</td>
@@ -169,32 +154,32 @@ Please refer to the [main.ipynb](./source/main.ipynb) file to see dataframes wit
     <tr>
       <th>6</th>
       <td>Random_Strategy (p_coop=0.1)</td>
-      <td>1.86</td>
-      <td>0.10</td>
+      <td>1.81</td>
+      <td>0.09</td>
       <td>Always_Betray</td>
       <td>Always_Cooperate</td>
     </tr>
     <tr>
       <th>7</th>
       <td>Always_Cooperate</td>
-      <td>1.71</td>
+      <td>1.68</td>
       <td>1.00</td>
       <td>Always_Betray</td>
       <td>Q_Learning</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>Random_Strategy (p_coop=0.5)</td>
+      <td>Periodic (period=4)</td>
       <td>1.39</td>
-      <td>0.49</td>
+      <td>0.50</td>
       <td>Always_Betray</td>
       <td>Always_Cooperate</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>Periodic (period=4)</td>
-      <td>1.39</td>
-      <td>0.50</td>
+      <td>Random_Strategy (p_coop=0.5)</td>
+      <td>1.38</td>
+      <td>0.48</td>
       <td>Always_Betray</td>
       <td>Always_Cooperate</td>
     </tr>
