@@ -14,7 +14,7 @@ Development time: 05.2026
 - Ran tournaments, compared strategies' effectiveness, and analysed the results.
 
 ## Context
-The Prisonner's Dilemma is a very famous Game Strategy problem, where two players make decisions simultaneously, and their reward depends on the combination of their choices. Namely, their reward is given by Table 1:
+The Prisoner’s Dilemma is a well-known Game Strategy problem in which two players make decisions simultaneously, and their rewards depend on the combination of their choices. Namely, their reward is given by Table 1:
 
 <!-- |   | 2nd player decision | *Cooperate* | *Betray* |
 | --- | --- | --- | --- |
@@ -54,13 +54,13 @@ The Prisonner's Dilemma is a very famous Game Strategy problem, where two player
 
 </table>
 
-The table suggests that betraying is always more profitable, regardless of the opponent's move. However, when playing multiple games with the same opponent, it becomes profitable to cooperate in the hope the other side will do the same.
+The table suggests that betraying is always more profitable, regardless of the opponent’s move. However, when playing multiple games with the same opponent, it becomes profitable to cooperate in the hope that the other side will do the same.
 
-The task is to find a strategy that maximizes its reward over a span of multiple games, with multiple opponents.
+The task is to find a strategy that maximizes reward over multiple games against multiple opponents.
 
 ## Implemented strategies
 ### Always Cooperate
-As name suggests, a very naive policy.
+As the name suggests, it's a very naive policy.
 
 ### Always Betray
 A pretty unfriendly player.
@@ -69,7 +69,7 @@ A pretty unfriendly player.
 It tries to always cooperate, until the opponent betrays 'k' times (k is a patience parameter), after which it betrays until the end.
 
 ### Forgiving
-Similar to the [Unforgiving](#unforgiving) strategy, but after being betrayed it cooperates again with a probability 'p' (a parameter). It gives the opponent a chance to redeem.
+Similar to the [Unforgiving](#unforgiving) strategy, but after being betrayed, it cooperates again with a probability 'p' (a parameter). It gives the opponent a chance to redeem.
 
 ### Copycat
 Copies the opponent's last move. Cooperates in the 1st round.
@@ -81,11 +81,11 @@ Oscillates between actions with a period k.
 Cooperates with a probability 'p' (parameter), else betrays.
 
 ### Q-Learning
-Its choices are determined by a q-table generated during traning. It was trained in tournaments against the same players it was tested with. Its observation were opponents past 'k' actions, and its own past 'k' actions. During the training it showed that in this scenario, it only needs one pair of past choices.
+Its choices are determined by a Q-table generated during training. It was trained in tournaments against the same players it was tested with. Its observations were opponents' past ‘k’ actions, and its own past ‘k’ actions. During the training, it showed that in this scenario, it only needs one pair of past choices.
 
 
 ## Results
-Outcome of the tournament is shown in Table 2:
+The outcome of the tournament is shown in Table 2:
 
 <table border="1" class="dataframe">
     <caption style="caption-side: bottom; padding-top: 8px;">
@@ -166,7 +166,7 @@ Please note that the Q-Learning and the Unforgiving converged to the exact same 
 
 The Forgiving strategy comes right behind 2nd place. Copycat does suprisingly well.
 
-Always Betray is right in the middle. Further analysis of the outcome shows that this stragety has never lost a duel - it always exploits other players' weaknesses. However, everytime it betrays, most of its opponents start to betray forever, thus Always Betray gets a lot of victories but few points. The table with duels outcomes is too large to be put here (refer to the [More details](#more-details) section).
+Always Betray is right in the middle. Further analysis of the outcome shows that this stragety has never lost a duel - it always exploits other players' weaknesses. However, everytime it betrays, most of its opponents start to betray forever, thus Always Betray gets a lot of victories but few points. The table with duel outcomes is too large to be put here (refer to the [More details](#more-details) section).
 
 Random with little chance of cooperating is very similar to Always Betray, so it scores 6th. Then comes the naive strategy, showing that it is better to be cold and ruthless than totally naive.
 
@@ -177,6 +177,7 @@ If you are interested in more details, like:
 - outcomes of duels between any two strategies,
 - graphs of actions taken by strategies,
 - q-table values,
+
 please refer to the [main.ipynb](./source/main.ipynb) notebook for more information.
 
 ## Technologies used
