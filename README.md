@@ -13,6 +13,12 @@ Development time: 05.2026
 - Trained a Q-Learning model to win most of the time against bot players.
 - Ran tournaments, compared strategies' effectiveness, and analysed the results.
 
+## Table of contents
+* [Context](#context)
+* [Implemented strategies](#implemented-strategies)
+* [Results](#results)
+* [Technologies used](#technologies-used)
+
 ## Context
 The Prisoner’s Dilemma is a well-known Game Strategy problem in which two players make decisions simultaneously, and their rewards depend on the combination of their choices. Namely, their reward is given by Table 1:
 
