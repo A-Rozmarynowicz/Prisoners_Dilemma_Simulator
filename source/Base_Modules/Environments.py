@@ -23,10 +23,10 @@ class Prison(Environment[Prison_Actions]):
     def Get_Actions(self) -> Type[Prison_Actions]:
         return Prison_Actions
 
-    def Duel(self, total_games : int, game_index : int, action_history : Action_History, *strategies : Prison_Strategy):
+    def Duel(self, total_games : int, game_index : int, action_history : Action_History, *strategies : Prison_Strategy, **extra_info):
         if len(strategies) != 2:
             raise ValueError("This duel requires exactly 2 players")
-        strategies_actions = self.Query_Strategies_Moves(total_games, game_index, action_history, *strategies)
+        strategies_actions = self.Query_Strategies_Moves(total_games, game_index, action_history, *strategies, extra_info=extra_info)
         rewards = self.Reward(strategies_actions)
         return rewards, strategies_actions
 
@@ -34,10 +34,16 @@ class Prison(Environment[Prison_Actions]):
                                total_games : int,
                                game_index : int,
                                action_history : Action_History,
-                               *strategies : Prison_Strategy):
+                               *strategies : Prison_Strategy,
+                               **extra_info
+                               ):
         strategies_actions : dict[int, Act]= {}
         for strategy in strategies:
-            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games, game_index=game_index, action_history=action_history, environment=self)
+            strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games,
+                                                                       game_index=game_index,
+                                                                       action_history=action_history,
+                                                                       environment=self,
+                                                                       extra_info=extra_info)
         return strategies_actions
 
     def Reward(self, strategies_actions):

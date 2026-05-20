@@ -42,6 +42,8 @@ class Game_Master():
 
     def All_Vs_All_Match(self, total_games_param : int, game_index : int, duel_size : int):
         ss = self.strategies
+        match_rewards = []
+        match_actions = []
 
         for s0 in range(0, len(ss)):
             for s1 in range(s0+1, len(ss)):
@@ -52,5 +54,9 @@ class Game_Master():
                                                         self.duel_matrix.Get_Action_History((id0, id1)),
                                                         ss[id0],
                                                         ss[id1])
-                self.duel_matrix.Append_Strategy_Actions(actions)
-                self.rewards.Store_Duel_Rewards(rewards)
+                match_rewards.append(rewards)
+                match_actions.append(actions)
+
+        for i in range(len(match_actions)):
+            self.duel_matrix.Append_Strategy_Actions(match_actions[i])
+            self.rewards.Store_Duel_Rewards(match_rewards[i])
