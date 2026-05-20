@@ -42,7 +42,6 @@ class Prison(Environment[Prison_Actions]):
             strategies_actions[strategy.Get_ID()] = strategy.Make_Move(total_games=total_games,
                                                                        game_index=game_index,
                                                                        action_history=action_history,
-                                                                       environment=self,
                                                                        **extra_info)
         return strategies_actions
 
