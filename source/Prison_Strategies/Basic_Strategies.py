@@ -6,7 +6,7 @@ from collections import defaultdict
 import pickle
 
 class Prison_Strategy(Strategy[pacts]):
-    def Make_Move(self, total_games : int, game_index : int, action_history : Action_History[Prison_Strategy], environment) -> pacts:
+    def Make_Move(self, total_games : int, game_index : int, action_history : Action_History[Prison_Strategy], environment, **extra_info) -> pacts:
         return list(pacts)[0]
 
 class Random_Strategy(Prison_Strategy):
@@ -17,18 +17,18 @@ class Random_Strategy(Prison_Strategy):
     def __str__(self):
         return super().__str__() + f" (p_coop={self.p})"
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         if random() < self.p:
             return pacts.Cooperate
         else:
             return pacts.Betray
 
 class Always_Betray(Prison_Strategy):
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         return pacts.Betray
 
 class Always_Cooperate(Prison_Strategy):
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         return pacts.Cooperate
 
 class Patient_Unforgiving(Prison_Strategy):
@@ -39,7 +39,7 @@ class Patient_Unforgiving(Prison_Strategy):
     def __str__(self):
         return super().__str__() + f" (patience={self.patience})"
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
         betray_count = 0
         for ea in enemy_actions:
@@ -57,7 +57,7 @@ class Copycat(Prison_Strategy):
     def __str__(self):
         return super().__str__() + f" (1st={self.init_action})"
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
         if len(enemy_actions) > 0:
             return enemy_actions[-1]
@@ -71,7 +71,7 @@ class Periodic(Prison_Strategy):
     def __str__(self):
         return super().__str__() + f" (period={self.period})"
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         self_actions, _ = action_history.Get_Ally_Enemy_Actions(self.ID)
         if len(self_actions) == 0:
             return pacts.Cooperate
@@ -94,7 +94,7 @@ class Forgiving(Prison_Strategy):
     def __str__(self):
         return super().__str__() + f" (p_forgive={self.p_forgive})"
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
 
         if game_index == 0:

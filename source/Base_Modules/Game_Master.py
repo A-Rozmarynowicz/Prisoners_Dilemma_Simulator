@@ -53,7 +53,9 @@ class Game_Master():
                                                         game_index,
                                                         self.duel_matrix.Get_Action_History((id0, id1)),
                                                         ss[id0],
-                                                        ss[id1])
+                                                        ss[id1],
+                                                        total_rewards=self.rewards.Get_Total_Rewards(),
+                                                        )
                 match_rewards.append(rewards)
                 match_actions.append(actions)
 

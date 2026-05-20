@@ -90,7 +90,7 @@ class Q_Learning(Prison_Strategy):
         res = max(max_reward_per_a, key=max_reward_per_a.get)
         return res
 
-    def Make_Move(self, total_games, game_index, action_history, environment):
+    def Make_Move(self, total_games, game_index, action_history, environment, **extra_info):
         self_actions, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.ID)
 
         if game_index == 0:
