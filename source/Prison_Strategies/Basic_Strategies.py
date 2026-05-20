@@ -59,8 +59,6 @@ class Copycat(Prison_Strategy):
 
     def Make_Move(self, total_games, game_index, action_history, **extra_info):
         _, enemy_actions = action_history.Get_Ally_Enemy_Actions(self.Get_ID())
-        # total_rewards = extra_info["total_rewards"] if "total_rewards" in extra_info else {}
-        # enemy_id = [k for k in action_history.Get_Action_History().keys() if k != self.ID][0]
 
         if len(enemy_actions) > 0:
             return enemy_actions[-1]
